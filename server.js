@@ -13,12 +13,6 @@ const client = jwksClient({
 });
 
 
-app.get('/', (request, response) => {
-  response.send('Hello World 🥳');
-});
-
-
-
 function getKey(header, callback) {
   client.getSigningKey(header.kid, function (err, key) {
     var signingKey = key.publicKey || key.rsaPublicKey;
