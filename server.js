@@ -4,8 +4,13 @@ const cors = require('cors');
 const app = express();
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa'); 
+const mongoose = require('mongoose');
+const { getBooks } = require('./controllers/Books.controller');
 const PORT = process.env.PORT;
 const JWKSURI = process.env.JWKSURI;
+const MONGO_DB_URL = process.env.MONGO_DB_URL
+mongoose.connect(`${MONGO_DB_URL}/books`, {useNewUrlParser: true, useUnifiedTopology: true});
+const {seedCusCollection} = require('./model/Customer.model');
 app.use(cors())
 
 const client = jwksClient({
@@ -25,7 +30,7 @@ function getKey(header, callback) {
 app.get('/verify-token', (request, response) => {
   
   const token = request.headers.authorization.split(' ')[1];
-  console.log(token);
+  // console.log(token);
   
   jwt.verify(token, getKey, {}, (error, user) => {
     if (error) {
@@ -34,6 +39,8 @@ app.get('/verify-token', (request, response) => {
     response.json(user);
   });
 });
+
+app.get('/books', getBooks);
 
 
 app.listen(PORT, () => {
