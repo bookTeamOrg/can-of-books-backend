@@ -10,7 +10,9 @@ const PORT = process.env.PORT;
 const JWKSURI = process.env.JWKSURI;
 const MONGO_DB_URL = process.env.MONGO_DB_URL
 mongoose.connect(`${MONGO_DB_URL}/books`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.set('useCreateIndex', true);
 const {seedCusCollection} = require('./model/Customer.model');
+// seedCusCollection();
 app.use(cors())
 
 const client = jwksClient({
