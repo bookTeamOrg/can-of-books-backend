@@ -5,7 +5,7 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa'); 
 const mongoose = require('mongoose');
-const { getBooks } = require('./controllers/Books.controller');
+const { getBooks,createBook,deleteBook } = require('./controllers/Books.controller');
 const PORT = process.env.PORT;
 const JWKSURI = process.env.JWKSURI;
 const MONGO_DB_URL = process.env.MONGO_DB_URL
@@ -13,7 +13,8 @@ mongoose.connect(`${MONGO_DB_URL}/books`, {useNewUrlParser: true, useUnifiedTopo
 mongoose.set('useCreateIndex', true);
 const {seedCusCollection} = require('./model/Customer.model');
 // seedCusCollection();
-app.use(cors())
+app.use(cors());
+app.use(express.json());
 
 const client = jwksClient({
   jwksUri: JWKSURI
@@ -43,7 +44,8 @@ app.get('/verify-token', (request, response) => {
 });
 
 app.get('/books', getBooks);
-
+app.post('/book', createBook);
+app.delete('/book/:id',deleteBook);
 
 app.listen(PORT, () => {
   console.log(`Server started on ${PORT}`);
