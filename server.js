@@ -5,7 +5,7 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa'); 
 const mongoose = require('mongoose');
-const { getBooks,createBook,deleteBook } = require('./controllers/Books.controller');
+const { getBooks,createBook,deleteBook,updateBook } = require('./controllers/Books.controller');
 const PORT = process.env.PORT;
 const JWKSURI = process.env.JWKSURI;
 const MONGO_DB_URL = process.env.MONGO_DB_URL
@@ -46,6 +46,8 @@ app.get('/verify-token', (request, response) => {
 app.get('/books', getBooks);
 app.post('/book', createBook);
 app.delete('/book/:id',deleteBook);
+app.put('/book/:id', updateBook);
+
 
 app.listen(PORT, () => {
   console.log(`Server started on ${PORT}`);
