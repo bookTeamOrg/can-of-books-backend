@@ -19,7 +19,7 @@ app.use(express.json());
 const client = jwksClient({
   jwksUri: JWKSURI
 });
-
+console.log(jwksClient);
 
 function getKey(header, callback) {
   client.getSigningKey(header.kid, function (err, key) {
@@ -34,8 +34,8 @@ app.get('/verify-token', (request, response) => {
   
   const token = request.headers.authorization.split(' ')[1];
   // console.log(token);
-  
   jwt.verify(token, getKey, {}, (error, user) => {
+
     if (error) {
       response.send('invalid token');
     }
